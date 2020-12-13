@@ -9,7 +9,7 @@ export type Route = {
   callback: RouteCallback;
 };
 
-const http404: RouteCallback = (_) => ({ status: 404 });
+const http404: RouteCallback = (_) => new Response("", 404);
 
 export class Router {
   private routes: Route[] = [];
