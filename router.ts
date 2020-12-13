@@ -1,6 +1,7 @@
 import { Request } from "./request.ts";
+import { Response } from "./response.ts";
 
-export type RouteCallback = (request: Request) => void;
+export type RouteCallback = (request: Request) => Response;
 
 export type Route = {
   method: string;
@@ -8,9 +9,7 @@ export type Route = {
   callback: RouteCallback;
 };
 
-const http404: RouteCallback = (request) => {
-  request.respond({ status: 404, body: "HTTP 404" });
-};
+const http404: RouteCallback = (_) => ({ status: 404 });
 
 export class Router {
   private routes: Route[] = [];

@@ -3,7 +3,6 @@ import {
   serve,
 } from "https://deno.land/std@0.80.0/http/server.ts";
 import { RouteCallback, Router } from "./router.ts";
-import { Request } from "./request.ts";
 
 export class App {
   private router: Router;
@@ -17,7 +16,8 @@ export class App {
     );
     for await (const request of server) {
       const [callback, params] = this.router.match(request.method, request.url);
-      callback(request);
+      const response = callback(request);
+      request.respond(response);
     }
   }
   public route(
