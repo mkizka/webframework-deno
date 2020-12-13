@@ -1,22 +1,37 @@
 import { Response as BaseResponse } from "https://deno.land/std@0.80.0/http/server.ts";
 
-export class Response implements BaseResponse {
-  constructor(
-    public body: string,
-    public status?: number,
-    public headers?: Headers,
-    public trailers?: BaseResponse["trailers"],
-  ) {
+type Body = Exclude<BaseResponse["body"], undefined>;
+
+export type ResponseParameter = Pick<
+  BaseResponse,
+  "status" | "headers" | "trailers"
+>;
+
+export class Response {
+  public body: Body = "";
+  public status = 200;
+  public headers: Headers = new Headers();
+  public trailers?: BaseResponse["trailers"];
+  public charset = "utf-8";
+  public contentType = `text/plain`;
+
+  constructor(body: Body, parameter?: ResponseParameter) {
+    this.body = body || this.body;
+    this.status = parameter?.status || this.status;
+    this.headers = parameter?.headers || this.headers;
+    if (!this.headers.get("Content-Type")) {
+      this.headers.append("Content-Type", this.getContentType());
+    }
+    this.trailers = parameter?.trailers || this.trailers;
+  }
+
+  public getContentType(): string {
+    return `${this.contentType};charset=${this.charset}`;
   }
 }
 
 export class JSONResponse extends Response {
-  constructor(
-    json: { [key: string]: any },
-    status?: number,
-    headers?: Headers,
-    trailers?: BaseResponse["trailers"],
-  ) {
-    super(JSON.stringify(json), status, headers, trailers);
+  constructor(json: { [key: string]: any }, parameter?: ResponseParameter) {
+    super(JSON.stringify(json), parameter);
   }
 }
