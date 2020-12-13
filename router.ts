@@ -1,7 +1,8 @@
-import { ServerRequest } from "https://deno.land/std@0.80.0/http/server.ts";
+import { Request } from "./request.ts";
 
-type RouteCallback = (request: ServerRequest) => void;
-type Route = {
+export type RouteCallback = (request: Request) => void;
+
+export type Route = {
   method: string;
   path: RegExp;
   callback: RouteCallback;

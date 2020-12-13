@@ -1,9 +1,9 @@
 import {
   HTTPOptions,
   serve,
-  ServerRequest,
 } from "https://deno.land/std@0.80.0/http/server.ts";
-import { Router } from "./router.ts";
+import { RouteCallback, Router } from "./router.ts";
+import { Request } from "./request.ts";
 
 export class App {
   private router: Router;
@@ -23,7 +23,7 @@ export class App {
   public route(
     path: RegExp,
     method: string,
-    callback: (request: ServerRequest) => void,
+    callback: RouteCallback,
   ) {
     this.router.add({ path, method, callback });
   }
