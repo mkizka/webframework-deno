@@ -1,15 +1,15 @@
 import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 
-export type RouteCallback = (request: Request) => Response;
+export type RouteHandler = (request: Request) => Response;
 
 export type Route = {
   method: string;
   path: RegExp;
-  callback: RouteCallback;
+  handler: RouteHandler;
 };
 
-const http404: RouteCallback = (_) => new Response("", { status: 404 });
+const http404: RouteHandler = (_) => new Response("", { status: 404 });
 
 export class Router {
   private routes: Route[] = [];
@@ -19,11 +19,11 @@ export class Router {
   public match(
     method: string,
     path: string,
-  ): [RouteCallback, { [key: string]: string }] {
+  ): [RouteHandler, { [key: string]: string }] {
     for (const route of this.routes) {
       const matched = path.match(route.path);
       if (matched && route.method == method) {
-        return [route.callback, matched.groups || {}];
+        return [route.handler, matched.groups || {}];
       }
     }
     return [http404, {}];
