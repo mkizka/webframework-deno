@@ -3,11 +3,11 @@ import { JSONResponse, Response } from "./response.ts";
 
 const app = new App();
 
-app.route(/\/$/, "GET", (request) => {
+app.route('/', "GET", (request) => {
   return new JSONResponse({ hoge: 1, fuga: "aあ" });
 });
 
-app.route(/\/fuga$/, "GET", (request) => {
+app.route('/<name>', "GET", (request) => {
   return new Response("fugafuga");
 });
 

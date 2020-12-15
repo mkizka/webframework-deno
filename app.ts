@@ -2,7 +2,7 @@ import {
   HTTPOptions,
   serve,
 } from "https://deno.land/std@0.80.0/http/server.ts";
-import { RouteHandler, Router } from "./router.ts";
+import { pathToRegExp, RouteHandler, Router } from "./router.ts";
 
 export class App {
   private router: Router;
@@ -21,10 +21,14 @@ export class App {
     }
   }
   public route(
-    path: RegExp,
+    path: string | RegExp,
     method: string,
     handler: RouteHandler,
   ) {
-    this.router.add({ path, method, handler });
+    if (typeof path == "string") {
+      this.router.add({ path: pathToRegExp(path), method, handler });
+    } else {
+      this.router.add({ path, method, handler });
+    }
   }
 }
