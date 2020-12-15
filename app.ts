@@ -16,7 +16,7 @@ export class App {
     );
     for await (const request of server) {
       const [handler, params] = this.router.match(request.method, request.url);
-      const response = handler(request);
+      const response = handler(request, params);
       request.respond(response);
     }
   }

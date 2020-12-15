@@ -4,7 +4,7 @@ type Body = Exclude<BaseResponse["body"], undefined>;
 
 export type ResponseParameter = Omit<BaseResponse, "body">;
 
-export class Response {
+export class Response implements BaseResponse {
   public body: Body = "";
   public status = 200;
   public headers: Headers = new Headers();
@@ -28,7 +28,7 @@ export class Response {
 }
 
 export class JSONResponse extends Response {
-  constructor(json: { [key: string]: any }, parameter?: ResponseParameter) {
+  constructor(json: { [key: string]: unknown }, parameter?: ResponseParameter) {
     super(JSON.stringify(json), parameter);
   }
 }
