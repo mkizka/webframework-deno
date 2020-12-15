@@ -1,4 +1,4 @@
-import escapeStringRegExp from "https://esm.sh/escape-string-regexp"
+import escapeStringRegExp from "https://esm.sh/escape-string-regexp";
 import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 
@@ -13,12 +13,12 @@ export type Route = {
 const http404: RouteHandler = (_) => new Response("", { status: 404 });
 
 export function pathToRegExp(path: string): RegExp {
-  let escapedPath = escapeStringRegExp(path)
-  const matchs = escapedPath.match(/<\w+>/g) || []
+  let escapedPath = escapeStringRegExp(path);
+  const matchs = escapedPath.match(/<\w+>/g) || [];
   for (const matched of matchs) {
-    escapedPath = escapedPath.replace(matched, `(?${matched}.+)`)
+    escapedPath = escapedPath.replace(matched, `(?${matched}.+)`);
   }
-  return new RegExp(`^${escapedPath}$`)
+  return new RegExp(`^${escapedPath}$`);
 }
 
 export class Router {

@@ -2,10 +2,7 @@ import { Response as BaseResponse } from "https://deno.land/std@0.80.0/http/serv
 
 type Body = Exclude<BaseResponse["body"], undefined>;
 
-export type ResponseParameter = Pick<
-  BaseResponse,
-  "status" | "headers" | "trailers"
->;
+export type ResponseParameter = Omit<BaseResponse, "body">;
 
 export class Response {
   public body: Body = "";
