@@ -1,5 +1,4 @@
-import { App } from "./app.ts";
-import { JSONResponse, Response } from "./response.ts";
+import { App, JSONResponse, Response } from "./mod.ts";
 
 const app = new App();
 
