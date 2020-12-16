@@ -2,11 +2,11 @@ import escapeStringRegExp from "https://esm.sh/escape-string-regexp";
 import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 
-export type RequestParams = { [key: string]: string };
+export type RequestParams<T={}> = { [key: string]: string };
 
-export type RouteHandler = (
+export type RouteHandler<T> = (
   request: Request,
-  params: RequestParams,
+  params: RequestParams<T>,
 ) => Response;
 
 export type Route = {

@@ -6,7 +6,7 @@ app.route("/", "GET", (request, params) => {
   return new JSONResponse({ hoge: 1, fuga: "aあbc" });
 });
 
-app.route("/<name>", "GET", (request, params) => {
+app.route("/<hoge>/<fuga>", "GET", (request, params) => {
   return new Response(params.name);
 });
 

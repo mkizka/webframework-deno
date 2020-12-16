@@ -4,6 +4,9 @@ import {
 } from "https://deno.land/std@0.80.0/http/server.ts";
 import { pathToRegExp, RouteHandler, Router } from "./router.ts";
 
+type RoutePath<PathString extends string> = 
+  PathString extends `/<${infer P1}>/<${infer P2}>` ? { [key in P1|P2]: string } : { [key: string]: string }
+
 export class App {
   private router: Router;
   constructor() {
@@ -20,10 +23,10 @@ export class App {
       request.respond(response);
     }
   }
-  public route(
-    path: string | RegExp,
+  public route<T extends string>(
+    path: T | RegExp,
     method: string,
-    handler: RouteHandler,
+    handler: RouteHandler<RoutePath<T>>,
   ) {
     if (typeof path == "string") {
       this.router.add({ path: pathToRegExp(path), method, handler });
