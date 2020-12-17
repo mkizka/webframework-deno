@@ -11,12 +11,12 @@ type PathKeys<PathString extends string> = PathString extends
   : PathKey<PathString>;
 
 export type PathParams<PathString extends string> = PathKeys<PathString> extends
-  never ? { [key: string]: never }
+  never ? BasePathParams
   : { [key in PathKeys<PathString>]: string };
 
-export type BasePathParams = { [key: string]: string };
+export type BasePathParams = Record<string, string | undefined>;
 
-export type RouteHandler<T extends BasePathParams = Record<string, string>> = (
+export type RouteHandler<T extends BasePathParams = BasePathParams> = (
   request: Request,
   params: T,
 ) => Response;
@@ -46,7 +46,7 @@ export class Router {
   public match<T extends BasePathParams>(
     method: string,
     path: string,
-  ): [RouteHandler<T>, Record<string, string>] {
+  ): [RouteHandler<T>, BasePathParams] {
     for (const route of this.routes) {
       const matched = path.match(route.path);
       if (matched && route.method == method) {
