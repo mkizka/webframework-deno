@@ -2,17 +2,29 @@ import escapeStringRegExp from "https://esm.sh/escape-string-regexp";
 import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 
-export type RequestParams<T={}> = { [key: string]: string };
+type PathKey<PathItem extends string> = PathItem extends `\<${infer Key}\>`
+  ? Key
+  : never;
 
-export type RouteHandler<T> = (
+type PathKeys<PathString extends string> = PathString extends
+  `${infer PathItem}/${infer Others}` ? PathKey<PathItem> | PathKeys<Others>
+  : PathKey<PathString>;
+
+export type PathParams<PathString extends string> = PathKeys<PathString> extends
+  never ? { [key: string]: never }
+  : { [key in PathKeys<PathString>]: string };
+
+export type BasePathParams = { [key: string]: string };
+
+export type RouteHandler<T extends BasePathParams = Record<string, string>> = (
   request: Request,
-  params: RequestParams<T>,
+  params: T,
 ) => Response;
 
 export type Route = {
   method: string;
   path: RegExp;
-  handler: RouteHandler;
+  handler: RouteHandler<BasePathParams>;
 };
 
 export const http404: RouteHandler = (_) => new Response("", { status: 404 });
@@ -31,7 +43,10 @@ export class Router {
   public add(route: Route): void {
     this.routes.push(route);
   }
-  public match(method: string, path: string): [RouteHandler, RequestParams] {
+  public match<T extends BasePathParams>(
+    method: string,
+    path: string,
+  ): [RouteHandler<T>, Record<string, string>] {
     for (const route of this.routes) {
       const matched = path.match(route.path);
       if (matched && route.method == method) {

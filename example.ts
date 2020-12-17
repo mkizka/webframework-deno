@@ -7,7 +7,7 @@ app.route("/", "GET", (request, params) => {
 });
 
 app.route("/<hoge>/<fuga>", "GET", (request, params) => {
-  return new Response(params.name);
+  return new JSONResponse(params);
 });
 
 app.serve({ hostname: "localhost", port: 8080 });
