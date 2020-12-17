@@ -22,8 +22,8 @@ export type RouteHandler<T extends BasePathParams = BasePathParams> = (
 ) => Response;
 
 export type Route = {
-  method: string;
   path: RegExp;
+  method: string;
   handler: RouteHandler<BasePathParams>;
 };
 
@@ -44,8 +44,8 @@ export class Router {
     this.routes.push(route);
   }
   public match<T extends BasePathParams>(
-    method: string,
     path: string,
+    method: string,
   ): [RouteHandler<T>, BasePathParams] {
     for (const route of this.routes) {
       const matched = path.match(route.path);

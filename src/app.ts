@@ -15,7 +15,7 @@ export class App {
       `HTTP webserver running.  Access it at: http://localhost:8080/`,
     );
     for await (const request of server) {
-      const [handler, params] = this.router.match(request.method, request.url);
+      const [handler, params] = this.router.match(request.url, request.method);
       const response = handler(request, params);
       request.respond(response);
     }

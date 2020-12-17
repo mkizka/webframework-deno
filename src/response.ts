@@ -12,7 +12,7 @@ export class Response implements BaseResponse {
   public charset = "utf-8";
   public contentType = `text/plain`;
 
-  constructor(body: Body, parameter?: ResponseParameter) {
+  constructor(body: Body = "", parameter?: ResponseParameter) {
     this.body = body || this.body;
     this.status = parameter?.status || this.status;
     this.headers = parameter?.headers || this.headers;
