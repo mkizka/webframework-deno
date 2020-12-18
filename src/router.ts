@@ -40,8 +40,15 @@ export function pathToRegExp(path: string): RegExp {
 
 export class Router {
   private routes: Route[] = [];
-  public add(route: Route): void {
-    this.routes.push(route);
+  public add(route: { path: string | RegExp } & Omit<Route, "path">): void {
+    const regExpPath = typeof route.path == "string"
+      ? pathToRegExp(route.path)
+      : route.path;
+    this.routes.push({
+      path: regExpPath,
+      method: route.method,
+      handler: route.handler,
+    });
   }
   public match<T extends BasePathParams>(
     path: string,

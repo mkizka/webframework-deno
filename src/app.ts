@@ -2,7 +2,7 @@ import {
   HTTPOptions,
   serve,
 } from "https://deno.land/std@0.80.0/http/server.ts";
-import { PathParams, pathToRegExp, RouteHandler, Router } from "./router.ts";
+import { PathParams, RouteHandler, Router } from "./router.ts";
 
 export class App {
   private router: Router;
@@ -25,11 +25,6 @@ export class App {
     method: string,
     handler: RouteHandler<PathParams<T>>,
   ) {
-    const pathRegExp = typeof path == "string" ? pathToRegExp(path) : path;
-    this.router.add({
-      path: pathRegExp,
-      method: method,
-      handler: handler as RouteHandler,
-    });
+    this.router.add({ path, method, handler: handler as RouteHandler });
   }
 }
