@@ -5,11 +5,11 @@ import {
 import { PathParams, RouteHandler, Router } from "./router.ts";
 
 export class App {
-  private router: Router;
+  public readonly router: Router;
   constructor() {
     this.router = new Router();
   }
-  public async serve(addr: string | HTTPOptions) {
+  public async serve(addr: string | HTTPOptions): Promise<void> {
     const server = serve(addr);
     console.log(
       `HTTP webserver running.  Access it at: http://localhost:8080/`,
@@ -24,7 +24,7 @@ export class App {
     path: T | RegExp,
     method: string,
     handler: RouteHandler<PathParams<T>>,
-  ) {
+  ): void {
     this.router.add({ path, method, handler: handler as RouteHandler });
   }
 }
