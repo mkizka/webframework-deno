@@ -1,7 +1,4 @@
-import {
-  HTTPOptions,
-  serve,
-} from "https://deno.land/std@0.80.0/http/server.ts";
+import { server } from "../deps.ts";
 import { PathParams, RouteHandler, Router } from "./router.ts";
 
 export class App {
@@ -9,12 +6,12 @@ export class App {
   constructor() {
     this.router = new Router();
   }
-  public async serve(addr: string | HTTPOptions): Promise<void> {
-    const server = serve(addr);
+  public async serve(addr: string | server.HTTPOptions): Promise<void> {
+    const requests = server.serve(addr);
     console.log(
       `HTTP webserver running.  Access it at: http://localhost:8080/`,
     );
-    for await (const request of server) {
+    for await (const request of requests) {
       const [handler, params] = this.router.match(request.url, request.method);
       const response = handler(request, params);
       request.respond(response);

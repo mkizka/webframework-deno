@@ -1,4 +1,4 @@
-import escapeStringRegExp from "https://esm.sh/escape-string-regexp";
+import { escapeStringRegExp } from "../deps.ts";
 import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 

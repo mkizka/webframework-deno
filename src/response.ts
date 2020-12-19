@@ -1,14 +1,14 @@
-import { Response as BaseResponse } from "https://deno.land/std@0.80.0/http/server.ts";
+import { server } from "../deps.ts";
 
-type Body = Exclude<BaseResponse["body"], undefined>;
+type Body = Exclude<server.Response["body"], undefined>;
 
-export type ResponseParameter = Omit<BaseResponse, "body">;
+export type ResponseParameter = Omit<server.Response, "body">;
 
-export class Response implements BaseResponse {
+export class Response implements server.Response {
   public body: Body = "";
   public status = 200;
   public headers: Headers = new Headers();
-  public trailers?: BaseResponse["trailers"];
+  public trailers?: server.Response["trailers"];
   public charset = "utf-8";
   public contentType = `text/plain`;
 
