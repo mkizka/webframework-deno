@@ -55,7 +55,7 @@ export class Router {
     method: string,
   ): [RouteHandler<T>, BasePathParams] {
     for (const route of this.routes) {
-      const matched = path.match(route.path);
+      const matched = path.split("?")[0].match(route.path);
       if (matched && route.method == method) {
         return [route.handler, matched.groups || {}];
       }

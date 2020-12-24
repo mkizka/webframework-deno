@@ -71,6 +71,19 @@ Deno.test("Router.(add|match): 静的なパスにマッチ", () => {
   asserts.assertEquals(response.status, 200);
 });
 
+Deno.test("Router.(add|match): クエリパラメータを含むパスにマッチ", () => {
+  const router = new Router();
+  router.add({
+    path: "/hoge/fuga",
+    method: "GET",
+    handler: () => new Response(),
+  });
+  const [handler, params] = router.match("/hoge/fuga?a=b", "GET");
+  asserts.assertEquals(params, {});
+  const response = handler(new Request(), params);
+  asserts.assertEquals(response.status, 200);
+});
+
 Deno.test("Router.(add|match): マッチしない場合は404が返ってくる", () => {
   const router = new Router();
   router.add({
