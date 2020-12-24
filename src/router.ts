@@ -19,7 +19,7 @@ export type BasePathParams = Record<string, string | undefined>;
 export type RouteHandler<T extends BasePathParams = BasePathParams> = (
   request: Request,
   params: T,
-) => Response;
+) => Promise<Response>;
 
 export type Route = {
   path: RegExp;
@@ -27,7 +27,8 @@ export type Route = {
   handler: RouteHandler<BasePathParams>;
 };
 
-export const http404: RouteHandler = (_) => new Response("", { status: 404 });
+export const http404: RouteHandler = async (_) =>
+  new Response("", { status: 404 });
 
 export function pathToRegExp(path: string): RegExp {
   let escapedPath = escapeStringRegExp(path);

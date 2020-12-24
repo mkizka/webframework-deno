@@ -13,7 +13,7 @@ export class App {
     );
     for await (const request of requests) {
       const [handler, params] = this.router.match(request.url, request.method);
-      const response = handler(request, params);
+      const response = await handler(request, params);
       request.respond(response);
     }
   }
