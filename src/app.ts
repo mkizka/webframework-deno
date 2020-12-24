@@ -1,4 +1,5 @@
 import { server } from "../deps.ts";
+import { Request } from "../mod.ts";
 import { PathParams, RouteHandler, Router } from "./router.ts";
 
 export class App {
@@ -13,7 +14,7 @@ export class App {
     );
     for await (const request of requests) {
       const [handler, params] = this.router.match(request.url, request.method);
-      const response = handler(request, params);
+      const response = handler(new Request(request), params);
       request.respond(response);
     }
   }
